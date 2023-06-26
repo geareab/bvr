@@ -1,0 +1,12 @@
+do.geareab.com {
+  reverse_proxy playerrecruitback:3000  {
+    header_down Strict-Transport-Security max-age=31536000;
+   }
+   log {
+    output file /var/log/caddy/smfront_geareab_com-access.log {
+        roll_size 2mb
+        roll_keep 20
+        roll_keep_for 720h
+    }
+  }
+}

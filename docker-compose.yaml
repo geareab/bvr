@@ -1,0 +1,39 @@
+version: "3.8"
+services:
+  playerrecruitback:
+    build: ./PlayerRecruitBack
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./PlayerRecruitBack:/app
+      - /app/node_modules
+    env_file:
+      - ./PlayerRecruitBack/.env
+  mysql:
+    image: mysql:latest
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - '3306:3306'
+    volumes:
+      - my-db:/var/lib/mysql
+      - ./player_recruit.sql:/home/jr/bvr/player_recruit.sql 
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+  caddy:
+    image: caddy:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - caddy_logs:/var/log/access.log
+volumes:
+  my-db:
+  caddy_data:
+  caddy_config:
+  caddy_logs:
